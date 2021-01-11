@@ -148,14 +148,14 @@ Terminez l'installation en réalisant les
 Pour l'enregistrer sur le serveur Centreon Central, exécutez la commande suivante :
 
 ``` shell
-/opt/rh/rh-php72/root/bin/php /usr/share/centreon/bin/registerServerTopology.php -u <API_ACCOUNT> \
--t Poller -h <IP_TARGET_NODE> -n <POLLER_NAME>
+/usr/share/centreon/bin/registerServerTopology.sh -u <API_ACCOUNT> \
+-t remote -h <IP_TARGET_NODE> -n <POLLER_NAME>
 ```
 
 Exemple:
 
 ``` shell
-/opt/rh/rh-php72/root/bin/php /usr/share/centreon/bin/registerServerTopology.php -u admin -t Remote -h 192.168.0.1 -n remote-1
+/usr/share/centreon/bin/registerServerTopology.sh -u admin -t remote -h 192.168.0.1 -n remote-1
 ```
 
 > Remplacer **<IP_TARGET_NODE>** par l'adresse IP du serveur Centreon Central vue par votre collecteur.
@@ -173,35 +173,16 @@ Suivre ensuite les instructions
 192.168.0.1: please enter your password
 ```
 
-2. Définir les accès au proxy pour atteindre le serveur Centreon :
-
-``` shell
-Are you using a proxy ? (y/n)n
-```
-
-Si vous utilisez un proxy, veuillez définir les informations d'identification :
-
-``` shell
-Are you using a proxy ? (y/n)y
-
-proxy host: myproxy.example.com
-
-proxy port: 3128
-
-proxy username (press enter if no username/password are required): myuser
-
-please enter the proxy password:
-```
-
-3. Sélectionner l'adresse IP :
+2. Sélectionner l'adresse IP si plusieurs interfaces réseau existent:
 
 ```shell
-Found IP on CURRENT NODE:
-   [1]: 192.168.0.2
-Which IP do you want to use as CURRENT NODE IP ?1
+Which IP do you want to use as CURRENT NODE IP ?
+1) 192.168.0.2
+2) 192.168.0.3
+1
 ```
 
-4. Valider les informations:
+3. Valider les informations:
 
 ``` shell
 Summary of the informations that will be send:
@@ -219,9 +200,38 @@ address: 192.168.0.2
 Do you want to register this server with those informations ? (y/n)y
 ```
 
+4. Ajouter des informations nécessaire pour permettre de futures communication entre votre Remote Server et son Central
+
+```shell
+<CURRENT_NODE_ADDRESS> : Please enter your username:
+admin
+<CURRENT_NODE_ADDRESS> : Please enter your password:
+
+<CURRENT_NODE_ADDRESS> : Protocol [http]:
+<CURRENT_NODE_ADDRESS> : Port [80]:
+<CURRENT_NODE_ADDRESS> : centreon root folder [centroen]:
+```
+5. Définir les accès au proxy du serveur Centreon du Central :
+
+```shell
+Are you using a proxy ? (y/n)
+y
+enter your proxy Host:
+myproxy.example.com
+enter your proxy Port [3128]:
+
+Are you using a username/password ? (y/n)
+y
+enter your username:
+my_proxy_username
+enter your password:
+
+```
+
 Vous recevrez la validation du serveur Centreon Central :
 
 ``` shell
+2020-10-16T17:19:37+02:00 [INFO]: The CURRENT NODE 'remote: 'remote-1@192.168.0.2' has been converted successfully.
 2020-10-16T17:19:37+02:00 [INFO]: The CURRENT NODE 'remote': 'remote-1@192.168.0.2' linked to TARGET NODE: '192.168.0.1' has been added
 ```
 

@@ -129,23 +129,17 @@ systemctl enable centreon centengine
 
 ## Enregistrer le serveur
 
-Installez le référentiel de collections de logiciels à l'aide de cette commande :
-
-```shell
-yum install -y centos-release-scl
-```
-
 Pour l'enregistrer sur le serveur Centreon Central ou un serveur distant, exécutez la commande suivante :
 
 ``` shell
-/opt/rh/rh-php72/root/bin/php /usr/share/centreon/bin/registerServerTopology.php -u <API_ACCOUNT> \
--t Poller -h <IP_TARGET_NODE> -n <POLLER_NAME>
+/usr/share/centreon/bin/registerServerTopology.sh -u <API_ACCOUNT> \
+-t poller -h <IP_TARGET_NODE> -n <POLLER_NAME>
 ```
 
 Exemple:
 
 ``` shell
-/opt/rh/rh-php72/root/bin/php /usr/share/centreon/bin/registerServerTopology.php -u admin -t Poller -h 192.168.0.1 -n poller-1
+/usr/share/centreon/bin/registerServerTopology.sh -u admin -t poller -h 192.168.0.1 -n poller-1
 ```
 
 > Remplacer **<IP_TARGET_NODE>** par l'adresse IP du serveur Centreon Central ou du Remote Server vue par votre
@@ -161,38 +155,18 @@ Suivre ensuite les instructions
 1. Saisir le mot de passe :
 
 ``` shell
-192.168.0.1: please enter your password
+192.168.0.1: please enter your password:
 ```
-
-2. Définir les accès au proxy pour atteindre le serveur Centreon Central ou le Remote Server :
-
-``` shell
-Are you using a proxy ? (y/n)n
-```
-
-Si vous utilisez un proxy, veuillez définir les informations d'identification :
-
-``` shell
-Are you using a proxy ? (y/n)y
-
-proxy host: myproxy.example.com
-
-proxy port: 3128
-
-proxy username (press enter if no username/password are required): myuser
-
-please enter the proxy password:
-```
-
-3. Sélectionner l'adresse IP :
+2. Sélectionner l'adresse IP si plusieurs interfaces réseau existent:
 
 ```shell
-Found IP on CURRENT NODE:
-   [1]: 192.168.0.2
-Which IP do you want to use as CURRENT NODE IP ?1
+Which IP do you want to use as CURRENT NODE IP ?
+1) 192.168.0.2
+2) 192.168.0.3
+1
 ```
 
-4. Valider les informations:
+3. Valider les informations:
 
 ``` shell
 Summary of the informations that will be send:

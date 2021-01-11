@@ -197,23 +197,23 @@ Conclude installation by performing
 
 ## Register the server
 
-To transform the server into a Remote Server and register it to the Centreon Central server, execute the following command:
+To register it to the Centreon Central server or a Remote server, execute the following command:
 
 ``` shell
-/opt/rh/rh-php72/root/bin/php /usr/share/centreon/bin/registerServerTopology.php -u <API_ACCOUNT> \
--t Remote -h <IP_TARGET_NODE> -n <REMOTE_SERVER_NAME>
+/usr/share/centreon/bin/registerServerTopology.sh -u <API_ACCOUNT> \
+-t Poller -h <IP_TARGET_NODE> -n <POLLER_NAME>
 ```
 
 Example:
 
 ``` shell
-/opt/rh/rh-php72/root/bin/php /usr/share/centreon/bin/registerServerTopology.php -u admin \
--t Remote -h 192.168.0.1 -n remote-1
+/usr/share/centreon/bin/registerServerTopology.sh -u admin -t remote -h 192.168.0.1 -n remote-1
 ```
 
-> Replace **<IP_TARGET_NODE>** by the IP of the Centreon server seen by the Remote Server.
+> Replace **<IP_TARGET_NODE>** by the IP of the Centreon server seen by the poller or by the Remote Server if you
+> want to link your server to it.
 
-> The **<API_ACCOUNT>** must have access to configuration API. you can use default **admin** account.
+> The **<API_ACCOUNT>** must have access to configuration API. You can use default **admin** account.
 
 > If you need to change the HTTP method or the port, you can use the following format for the **-h** option:
 > HTTPS://<IP_TARGET_NODE>:PORT
@@ -222,38 +222,20 @@ Then follow instructions by
 1. Entering your password:
 
 ``` shell
-192.168.0.1: please enter your password
+192.168.0.1: please enter your password:
 ```
 
-2. Define if you use a proxy to connect to Centreon central server:
-
-``` shell
-Are you using a proxy ? (y/n)n
-```
-
-If you use a proxy, please define credentials:
-
-``` shell
-Are you using a proxy ? (y/n)y
-
-proxy host: myproxy.example.com
-
-proxy port: 3128
-
-proxy username (press enter if no username/password are required): myuser
-
-please enter the proxy password:
-```
-
-3. Select the IP adress:
+2. Select the IP adress if multiple network interfaces exist:
 
 ```shell
-Found IP on CURRENT NODE:
-   [1]: 192.168.0.2
-Which IP do you want to use as CURRENT NODE IP ?1
+Which IP do you want to use as CURRENT NODE IP ?
+1) 192.168.0.2
+2) 192.168.0.3
+1
 ```
 
-4. Then validate the information:
+
+3. Then validate the information:
 
 ``` shell
 Summary of the informations that will be send:
@@ -271,9 +253,38 @@ address: 192.168.0.2
 Do you want to register this server with those informations ? (y/n)y
 ```
 
+4. Add additional information to enable future communication between your Remote Server and its Central
+A few more information are required to convert your platform into Remote :
+```shell
+<CURRENT_NODE_ADDRESS> : Please enter your username:
+admin
+<CURRENT_NODE_ADDRESS> : Please enter your password:
+
+<CURRENT_NODE_ADDRESS> : Protocol [http]:
+<CURRENT_NODE_ADDRESS> : Port [80]:
+<CURRENT_NODE_ADDRESS> : centreon root folder [centroen]:
+```
+5. If you use a proxy, please define credentials:
+
+```shell
+Are you using a proxy ? (y/n)
+y
+enter your proxy Host:
+myproxy.example.com
+enter your proxy Port [3128]:
+
+Are you using a username/password ? (y/n)
+y
+enter your username:
+my_proxy_username
+enter your password:
+
+```
+
 You will receive the validation of the Centreon central server:
 
 ``` shell
+2020-10-16T17:19:37+02:00 [INFO]: The CURRENT NODE 'remote: 'remote-1@192.168.0.2' has been converted successfully.
 2020-10-16T17:19:37+02:00 [INFO]: The CURRENT NODE 'remote': 'remote-1@192.168.0.2' linked to TARGET NODE: '192.168.0.1' has been added
 ```
 
